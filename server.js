@@ -1,6 +1,7 @@
 const express = require ('express');
 const app = express();
 const PORT = process.env.PORT || 4000;
+
 const users = [
     {
       firstName: "User1",
@@ -33,6 +34,11 @@ const users = [
         email: "abc5@gmail.com"
       }
   ];
+
+  app.get('/', (req, res) => {
+    res.send('Home')
+  })
+
   app.get('/static-users', (req, res) => {
     const response = {
         status: "success",
@@ -41,4 +47,28 @@ const users = [
     }
     res.end(JSON.stringify(response));
   });
+
+  app.get('/dynamic-users', (req, res) => {
+    const response = {
+        status: "success",
+        src: "database",
+        data: users 
+        // #db user
+    }
+    })
+
+    app.post('/dynamic-users', (req, res) => {
+        const {firstName, lastName, age, email} = req.body();
+
+        const response = {
+          firstname: firstName,
+	        lastname: lastName,
+	        age: age,
+	        email: email
+        }
+
+    res.send().json(response);
+  });
+
+
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))

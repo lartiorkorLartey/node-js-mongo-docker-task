@@ -1,0 +1,24 @@
+{
+  "name": "js-mongo-docker-task",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lartiorkorLartey/node-js-mongo-docker-task.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lartiorkorLartey/node-js-mongo-docker-task/issues"
+  },
+  "homepage": "https://github.com/lartiorkorLartey/node-js-mongo-docker-task#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
