@@ -1,6 +1,13 @@
 const express = require ('express');
 const app = express();
+const {connectDB} = require('./connect')
+const User = require('./schema')
+
 const PORT = process.env.PORT || 4000;
+
+app.use(express.json())
+
+connectDB()
 
 const users = [
     {
@@ -48,27 +55,25 @@ const users = [
     res.end(JSON.stringify(response));
   });
 
-  app.get('/dynamic-users', (req, res) => {
-    const response = {
-        status: "success",
-        src: "database",
-        data: users 
-        // #db user
-    }
+  app.get('/dynamic-users', async (req, res) => {
+
+    const users = await User.find();
+    res.json(users)
     })
 
-    app.post('/dynamic-users', (req, res) => {
-        const {firstName, lastName, age, email} = req.body();
+    app.post('/dynamic-users', async (req, res) => {
+        const {firstName, lastName, age, email} = req.body;
 
-        const response = {
-          firstname: firstName,
-	        lastname: lastName,
-	        age: age,
-	        email: email
-        }
+        console.log(req.body);
 
-    res.send().json(response);
+        const user = await User.create({
+          age: age,
+	        email: email,
+          firstName: firstName,
+	        lastName: lastName
+        })
+
+        res.json(user);
   });
-
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
