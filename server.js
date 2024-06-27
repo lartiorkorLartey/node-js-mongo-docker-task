@@ -1,14 +1,26 @@
 const express = require ('express');
+const {connectDB} = require('./connect');
+const User = require('./schema');
+const Redis = require("ioredis");
+
 const app = express();
-const {connectDB} = require('./connect')
-const User = require('./schema')
-
 const PORT = process.env.PORT || 4000;
+// const REDIS_PORT = process.env.PORT || 6379;
+// const client = redis.createClient(REDIS_PORT)
 
-app.use(express.json())
+app.use(express.json());
+const redis = new Redis();
 
-connectDB()
+connectDB();
 
+// const setResponse = (newUser, user) => {
+//   console.log(`user details: ${user}`)
+// }
+const key1=2
+const keys= {
+  "users": 232323,
+  "userww": "sjhsjdjsdjd"
+}
 const users = [
     {
       firstName: "User1",
@@ -56,24 +68,37 @@ const users = [
   });
 
   app.get('/dynamic-users', async (req, res) => {
-
-    const users = await User.find();
-    res.json(users)
-    })
+    let users
+    const cachedUsers= await redis.get("Users")
+   console.log("hey", cachedUsers)
+    if (!cachedUsers) {
+      console.log("does not find it so hit db")
+      users = await User.find();
+      await redis.set("Users", JSON.stringify(users))
+      return res.json(users)
+    }
+    console.log("found cached data")
+    res.json(JSON.parse(cachedUsers))
+  })
 
     app.post('/dynamic-users', async (req, res) => {
         const {firstName, lastName, age, email} = req.body;
 
         console.log(req.body);
-
+       
+        
         const user = await User.create({
           age: age,
 	        email: email,
           firstName: firstName,
 	        lastName: lastName
         })
-
+        redis.del("Users")
         res.json(user);
+
+// redis
+  //   client.setex(newUser, 3600, user)
+  //   res.send(setResponse(newUser, user))
   });
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
