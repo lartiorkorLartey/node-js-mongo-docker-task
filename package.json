@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/lartiorkorLartey/node-js-mongo-docker-task#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.19.2",
     "ioredis": "^5.4.1",
     "mongodb": "^6.7.0",

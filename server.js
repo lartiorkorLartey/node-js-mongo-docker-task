@@ -1,26 +1,18 @@
 const express = require ('express');
 const {connectDB} = require('./connect');
 const User = require('./schema');
-const Redis = require("ioredis");
+const Redis = require('ioredis');
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
-// const REDIS_PORT = process.env.PORT || 6379;
-// const client = redis.createClient(REDIS_PORT)
 
 app.use(express.json());
+app.use(cors()); 
 const redis = new Redis();
 
 connectDB();
 
-// const setResponse = (newUser, user) => {
-//   console.log(`user details: ${user}`)
-// }
-const key1=2
-const keys= {
-  "users": 232323,
-  "userww": "sjhsjdjsdjd"
-}
 const users = [
     {
       firstName: "User1",
@@ -83,10 +75,7 @@ const users = [
 
     app.post('/dynamic-users', async (req, res) => {
         const {firstName, lastName, age, email} = req.body;
-
-        console.log(req.body);
-       
-        
+     
         const user = await User.create({
           age: age,
 	        email: email,
@@ -96,9 +85,6 @@ const users = [
         redis.del("Users")
         res.json(user);
 
-// redis
-  //   client.setex(newUser, 3600, user)
-  //   res.send(setResponse(newUser, user))
   });
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
