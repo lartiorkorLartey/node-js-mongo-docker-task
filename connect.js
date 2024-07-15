@@ -1,8 +1,11 @@
 const mongoose = require('mongoose')
 
+const dbUser=process.env.user;
+const dbPassword=process.env.password;
+
 const connectDB = async () => {
   try {
-    await mongoose.connect('mongodb://admin:password@localhost:27017');
+    await mongoose.connect(`mongodb://${dbUser}:${dbPassword}@mongodb`);
     console.log('db connected')
   } catch (error) {
     console.log(error)
@@ -10,5 +13,5 @@ const connectDB = async () => {
 }
 
 module.exports ={
-    connectDB
+  connectDB
 }

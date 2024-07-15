@@ -33,17 +33,17 @@ const users = [
       email: "abc3@gmail.com"
     },
     {
-        firstName: "User4",
-        lastName: "Name4",
-        age: "4",
-        email: "abc4@gmail.com"
-      },
-      {
-        firstName: "User5",
-        lastName: "Name5",
-        age: "5",
-        email: "abc5@gmail.com"
-      }
+      firstName: "User4",
+      lastName: "Name4",
+      age: "4",
+      email: "abc4@gmail.com"
+    },
+    {
+      firstName: "User5",
+      lastName: "Name5",
+      age: "5",
+      email: "abc5@gmail.com"
+    }
   ];
 
   app.get('/', (req, res) => {
@@ -62,7 +62,7 @@ const users = [
   app.get('/dynamic-users', async (req, res) => {
     let users
     const cachedUsers= await redis.get("Users")
-   console.log("hey", cachedUsers)
+    console.log("hey", cachedUsers)
     if (!cachedUsers) {
       console.log("does not find it so hit db")
       users = await User.find();
