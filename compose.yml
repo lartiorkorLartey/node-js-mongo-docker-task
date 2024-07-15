@@ -1,0 +1,30 @@
+version: '3'
+services:
+  app-backend:
+    build: .
+    ports:
+      - 4000:4000
+    environment:
+      dbUser: ${user}
+      dbPassword: ${password}
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${user}
+      MONGO_INITDB_ROOT_PASSWORD: ${password}
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_AUTH_USERNAME: ${user}
+      ME_CONFIG_MONGODB_AUTH_PASSWORD: ${password}
+    depends on:
+      - "mongodb"
+  redis-server:
+    image: redis
+    ports:
+      - 6379:6379
